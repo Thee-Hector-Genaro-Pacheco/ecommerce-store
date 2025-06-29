@@ -1,0 +1,41 @@
+/* client/src/styles/UserProfile.css */
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  padding: 20px;
+}
+
+.profile-card {
+  background-color: #fff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 480px;
+}
+
+.profile-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.profile-info {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.profile-info p {
+  margin: 10px 0;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.profile-info strong {
+  color: #333;
+}

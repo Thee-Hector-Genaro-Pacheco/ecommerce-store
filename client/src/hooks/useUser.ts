@@ -1,5 +1,4 @@
-// client/src/hooks/useUser.ts
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 import { gql, useQuery } from '@apollo/client';
 
 const GET_ME = gql`
@@ -14,12 +13,7 @@ const GET_ME = gql`
 `;
 
 export const useUser = () => {
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    setToken(storedToken);
-  }, []);
+  const token = localStorage.getItem('token'); // ⚠️ Fetch it directly
 
   const { data, loading, error } = useQuery(GET_ME, {
     skip: !token,
@@ -34,7 +28,6 @@ export const useUser = () => {
       : undefined,
   });
 
-  // 👇 ADD THIS to log the actual error
   useEffect(() => {
     if (error) {
       console.error("❌ useUser GraphQL Error:", error.message);

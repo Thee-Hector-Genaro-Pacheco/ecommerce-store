@@ -2,22 +2,30 @@ import s3 from "./s3";
 import { v4 as uuidv4 } from "uuid";
 import path from "path";
 
-export async function uploadImage(fileBuffer: Buffer, originalName: string, mimeType: string): Promise<string> {
-    // Get file  extension like .jpg, .png,
-    const fileExtension = path.extname(originalName);
-    // Generate a unique file name using uuid
-    const fileName = `${uuidv4()}${fileExtension}`;
+/**
+ * Uploads an image to a specified S3 folder.
+ * @param fileBuffer Buffer of the image file.
+ * @param originalName Original name with file extension.
+ * @param mimeType MIME type (e.g. image/jpeg).
+ * @param folder S3 folder path (e.g. 'profileImages', 'productImages').
+ */
+export async function uploadImage(
+  fileBuffer: Buffer,
+  originalName: string,
+  mimeType: string,
+  folder: string = "misc"
+): Promise<string> {
+  const fileExtension = path.extname(originalName);
+  const fileName = `${folder}/${uuidv4()}${fileExtension}`;
 
-    // Build parameters for the S3 upload
-    const params = {
-        Bucket: process.env.S3_BUCKET_NAME as string,
-        Key: fileName,
-        Body: fileBuffer,
-        ContentType: mimeType,
-    }
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME as string,
 
-    // Perorm the upload and wait for it to finish
-    const uploadResult = await s3.upload(params).promise();
-    // Return the URL of the uploaded image
-    return uploadResult.Location;
+    Key: fileName,
+    Body: fileBuffer,
+    ContentType: mimeType,
+  };
+
+  const uploadResult = await s3.upload(params).promise();
+  return uploadResult.Location;
 }

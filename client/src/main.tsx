@@ -1,25 +1,24 @@
-// Import React and ReactDOM
+// client/src/main.tsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-
-// Import the main App component
 import App from './App.tsx';
+import { BrowserRouter } from 'react-router-dom';
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
+import { AuthProvider } from './context/AuthContext.tsx';
 
-// Import the ApolloProvider to connect React with Apollo Client
-import { ApolloProvider } from '@apollo/client';
+const client = new ApolloClient({
+  uri: 'http://localhost:4000/graphql', // ✅ use your actual backend URI
+  cache: new InMemoryCache(),
+});
 
-// Import the custom Apollo Client instance
-import client from './graphql/client';
-
-// Import global CSS styles
-import './index.css';
-
-// Render the React app and wrap it with ApolloProvider
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    {/* ApolloProvider gives your entire app access to the GraphQL client */}
     <ApolloProvider client={client}>
-      <App />
+      <BrowserRouter>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </BrowserRouter>
     </ApolloProvider>
   </React.StrictMode>,
 );

@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1a1a1a;
+  background-color: #c9d2da!important;
   padding: 1rem 2rem;
   color: white;
 }
@@ -66,6 +66,20 @@
   border: none;
   color: white;
 }
+.user-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  margin-left: 1rem;
+  color: #f9eeee;
+}
+
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
 
 @media (max-width: 768px) {
   .nav-links {
@@ -89,3 +103,36 @@
     display: block;
   }
 }
+/* styles/Navbar.css */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #f9f9f9;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-left a,
+.nav-right a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.logout-button {
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #d33;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+

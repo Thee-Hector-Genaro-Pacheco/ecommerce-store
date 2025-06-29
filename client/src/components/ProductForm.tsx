@@ -12,8 +12,18 @@ const CREATE_PRODUCT = gql`
 `;
 
 const UPLOAD_IMAGE = gql`
-  mutation UploadImage($fileBuffer: String!, $originalName: String!, $mimeType: String!) {
-    uploadImage(fileBuffer: $fileBuffer, originalName: $originalName, mimeType: $mimeType) {
+  mutation UploadImage(
+    $fileBuffer: String!
+    $originalName: String!
+    $mimeType: String!
+    $folder: String
+  ) {
+    uploadImage(
+      fileBuffer: $fileBuffer
+      originalName: $originalName
+      mimeType: $mimeType
+      folder: $folder
+    ) {
       url
     }
   }
@@ -56,24 +66,24 @@ const ProductForm: React.FC = () => {
           const reader = new FileReader();
           reader.onload = () => {
             const result = reader.result as string;
-            const base64 = result.split(',')[1]; // remove `data:image/...;base64,`
+            const base64 = result.split(',')[1];
             resolve(base64);
           };
           reader.onerror = reject;
-          reader.readAsDataURL(file); // ✅ This reads as base64
-      });
+          reader.readAsDataURL(file);
+        });
 
         const uploadRes = await uploadImage({
           variables: {
             fileBuffer: base64String,
             originalName: file.name,
             mimeType: file.type,
+            folder: 'productImages', // ✅ Send to correct S3 folder
           },
         });
 
         imageUrl = uploadRes.data.uploadImage.url;
         console.log('🖼 Uploaded image URL:', imageUrl);
-
       }
 
       await createProduct({

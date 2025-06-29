@@ -1,31 +1,47 @@
-import React, { useState} from "react";
-import { Link } from "react-router-dom";    
-import "../styles/Navbar.css"; // Import your CSS styles
+// client/src/components/Navbar.tsx
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import '../styles/Navbar.css';
 
-const Navbar: React.FC = () => {
-    const [menuOpen, setMenuOpen] = useState(false);
+const Navbar = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
-    return (
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  return (
     <nav className="navbar">
-      <Link to="/" className="logo">🏠 EcomStore</Link>
-
-      <div className={`nav-links ${menuOpen ? "open" : ""}`}>
-        <Link to="/">Home</Link>
-        <div className="dropdown">
-          <button className="dropbtn">Products ▾</button>
-          <div className="dropdown-content">
-            <Link to="/products/shirts">Shirts</Link>
-            <Link to="/products/necklaces">Necklaces</Link>
-            <Link to="/products/purses">Purses</Link>
-            <Link to="/products/stanley-cups">Stanley Cups</Link>
-          </div>
-        </div>
-        <Link to="/admin">Admin</Link>
+      <div className="nav-left">
+        <Link className="logo" to="/">Ecommerce Store</Link>
+        <Link to="/products">Products</Link>
+        {user?.isAdmin && <Link to="/admin">Admin</Link>}
       </div>
 
-      <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
-        ☰
-      </button>
+      <div className="nav-right">
+        {user ? (
+          <>
+            <Link className="user-link" to="/account">
+              <img
+                className="user-avatar"
+                src={user.profilePicture}
+                alt="profile"
+              />
+              {user.username}
+            </Link>
+            <button className="logout-button" onClick={handleLogout}>
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
+          </>
+        )}
+      </div>
     </nav>
   );
 };
