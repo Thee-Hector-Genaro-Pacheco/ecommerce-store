@@ -8,6 +8,7 @@ import UserProfile from './pages/UserProfile';
 import CategoryPage from './pages/CategoryPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import AdminPage from './pages/AdminPage';
+import CartPage from './pages/CartPage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="/account" element={<UserProfile />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/products" element={<Products />} />

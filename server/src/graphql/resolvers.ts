@@ -7,12 +7,23 @@ import { hashPassword } from '../utils/hash';
 import { CreateUserArgs } from './types/userTypes';
 import { CreateProductArgs } from './types/productTypes';
 import { UploadImageArgs } from './types/imageTypes';
+import { CartItemInput } from './types/CartItemInput';
 
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+
+import Stripe from 'stripe';
+import { url } from 'inspector';
+
+
+const stripe: Stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+  apiVersion: '2025-06-30.basil', // ✅ use Stripe's newest supported version
+});
+
+
 
 interface Context {
   token: string | null;
@@ -55,6 +66,35 @@ export const resolvers /*: Resolvers<Context>*/ = {
   },
 
   Mutation: {
+    createCheckoutSession: async (_: any, { cartItems }: { cartItems: CartItemInput[] } ) => {
+      try {
+        console.log("Incoming checkout items:", cartItems); // Add this log
+        const session = await stripe.checkout.sessions.create({
+          payment_method_types: ['card'],
+          mode: 'payment',
+          line_items: cartItems.map(item => ({
+            price_data: {
+              currency: 'usd',
+              product_data: {
+                name: item.title,
+                images: item.image ? [item.image] : [], // Optional: include image if provided
+              },
+              unit_amount: Math.round(item.price * 100), // Stripe expects amount in cents
+            },
+            quantity: item.quantity,
+          })),
+          success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${process.env.FRONTEND_URL}/cart`,               
+
+        });
+        return { url: session.url };
+      } catch (error: any) {
+         console.error("Stripe session error details:", error); // ✅ Log full error
+         console.log("Incoming checkout items:", cartItems); // Add this log
+         throw new Error("Failed to create checkout session");
+      }
+
+    },
     createUser: async (_: unknown, args: CreateUserArgs) => {
       const {
         username,

@@ -1,11 +1,16 @@
 // client/src/components/Navbar.tsx
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import '../styles/Navbar.css';
+import { use } from 'react';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  const { state } = useCart();
+  const totalItems = state.items.reduce((sum, item ) => sum + item.quantity, 0)
 
   const handleLogout = () => {
     logout();
@@ -17,6 +22,9 @@ const Navbar = () => {
       <div className="nav-left">
         <Link className="logo" to="/">Ecommerce Store</Link>
         <Link to="/products">Products</Link>
+        <Link to="/cart" className="nav-link">
+          Cart 🛒 ({totalItems})
+        </Link>
         {user?.isAdmin && <Link to="/admin">Admin</Link>}
       </div>
 

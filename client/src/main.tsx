@@ -5,6 +5,7 @@ import App from './App.tsx';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import { AuthProvider } from './context/AuthContext.tsx';
+import { CartProvider } from './context/CartContext.tsx';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql', // ✅ use your actual backend URI
@@ -16,7 +17,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ApolloProvider client={client}>
       <BrowserRouter>
         <AuthProvider>
-          <App />
+          <CartProvider>
+            {/* ✅ Wrap your App with CartProvider */}
+            <App />
+            </CartProvider>
+
         </AuthProvider>
       </BrowserRouter>
     </ApolloProvider>

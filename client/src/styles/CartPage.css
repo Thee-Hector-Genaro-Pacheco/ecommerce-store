@@ -1,0 +1,37 @@
+.cart-page {
+  padding: 2rem;
+}
+
+.cart-items {
+  list-style: none;
+  padding: 0;
+}
+
+.cart-item {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.cart-image {
+  width: 100px;
+  height: auto;
+  object-fit: cover;
+}
+
+.cart-details button {
+  margin-right: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border: none;
+  background: black;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.cart-details button:hover {
+  background: #444;
+}

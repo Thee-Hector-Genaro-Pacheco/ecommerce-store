@@ -33,6 +33,19 @@ export const typeDefs = gql`
     image: String
     inStock: Boolean
   }
+  input CartItemInput {
+    id: ID!
+    quantity: Int!  # Quantity of the product in the cart     
+    price: Float!  # Price of the product at the time it was added to the cart
+    title: String!  # Title of the product
+    image: String # Optional, if you want to include the image URL
+  }
+  input CartItemInput {
+    id: ID!
+    quantity: Int!  # Quantity of the product in the cart
+    price: Float!  # Price of the product at the time it was added to the cart
+    title: String!  # Title of the product
+  } 
 
   # =======================
   # 📦 TYPE DEFINITIONS
@@ -70,6 +83,10 @@ export const typeDefs = gql`
     updatedAt: String
   }
 
+  type CheckoutResponse {
+    url: String!
+  }
+
 
   type UploadResponse {
     url: String!
@@ -77,6 +94,10 @@ export const typeDefs = gql`
   type LoginResponse {
     token: String!
     user: User!
+  }
+
+  type CheckoutResponse {
+    url: String!
   }
 
   # =======================
@@ -100,5 +121,6 @@ export const typeDefs = gql`
     createProduct(input: CreateProductInput!): Product
     uploadImage(fileBuffer: String!, originalName: String!, mimeType: String!): UploadResponse
     getPresignedUrl(filename: String!, folder: String!): String!
+    createCheckoutSession(cartItems: [CartItemInput!]!): CheckoutResponse!
   }
 `;
